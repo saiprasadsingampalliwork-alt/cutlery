@@ -33,9 +33,9 @@ export const defaultSiteContent: SiteContent = {
   email: brand.email,
   hours: brand.hours,
   hero: [
-    { src: "/photos/hero-bake.jpg", alt: "Nonstick cake moulds in square, round, and heart shapes" },
-    { src: "/photos/hero-knives.jpg", alt: "A bread knife, a shawarma knife, and a pizza cutter" },
-    { src: "/photos/hero-grill.jpg", alt: "A round charcoal grill with the lid open" },
+    { src: "/photos/hero-grill.jpg", alt: "A charcoal grill with two cooking shelves" },
+    { src: "/photos/hero-machines.jpg", alt: "A spiral dough mixer and an atta flour mill" },
+    { src: "/photos/hero-range.jpg", alt: "A three-burner stainless steel cooking range" },
   ],
   loginImage: { src: "/photos/category-knives.jpg", alt: "Kitchen knives with wooden handles on a white bench" },
   audiences: [
@@ -44,11 +44,11 @@ export const defaultSiteContent: SiteContent = {
     { id: "parties", text: "Grills, pans, and stands for a gathering.", image: { src: "/photos/category-grills.jpg", alt: "A charcoal grill ready for kebabs" } },
     { id: "commercial", text: "Machines, ranges, and spare parts for a working kitchen.", image: { src: "/photos/category-machines.jpg", alt: "A stainless steel flour mixer" } },
   ],
-  seasonImage: { src: "/photos/season-kitchen.jpg", alt: "Cake moulds, a piping bag, and a charcoal grill on a work counter" },
+  seasonImage: { src: "/photos/season-kitchen.jpg", alt: "A charcoal grill, a dough mixer, and a gas range on a work counter" },
   seasonName: "The kitchen, 2026",
   headline: "For the kitchen\nyou work in.",
-  heroText: "Cake moulds, knives, and charcoal grills, in the sizes a home kitchen or a bakery counter asks for.",
-  seasonText: "Teflon moulds, stainless steel, and charcoal grills for everyday baking and a weekend party.",
+  heroText: "Charcoal grills, dough machines, and gas ranges for a kitchen that cooks every day.",
+  seasonText: "Grills, mixers, and ranges for the counter, not the small tools beside them.",
 };
 
 // Photographs from the clothing shop. A saved admin setting that still points at one of these
@@ -106,6 +106,8 @@ const LEGACY_PHOTOS = new Set([
   "hero-table.jpg",
   "hero-cutlery.jpg",
   "hero-plates.jpg",
+  "hero-bake.jpg",
+  "hero-knives.jpg",
   "season-table.jpg",
   "shelf.jpg",
   "audience-everyday.jpg",
@@ -168,6 +170,8 @@ const retiredCopy = new Set([
   "For the table you already have.",
   "For the table\nyou already have.",
   "Plates, bowls, and cutlery in stoneware and steel, finished in small runs in Bengaluru.",
+  "Cake moulds, knives, and charcoal grills, in the sizes a home kitchen or a bakery counter asks for.",
+  "Teflon moulds, stainless steel, and charcoal grills for everyday baking and a weekend party.",
   "Stoneware, stainless steel, and brass, finished in small runs and set on the table.",
   "The daily plate and the spoon you reach for.",
   "Platters and sets for a full table.",
