@@ -1,0 +1,35 @@
+"use client";
+
+import { ProductCard } from "@/components/product-card";
+import { getProduct, onSale } from "@/lib/catalog";
+import { useStore } from "@/lib/store";
+
+export function RecentShelf({ plain = false }: { plain?: boolean }) {
+  const { recent, overrides } = useStore();
+  const items = recent.map((slug) => getProduct(slug)).filter((product): product is NonNullable<typeof product> => product != null && onSale(product.slug, overrides)).slice(0, 4);
+  if (items.length === 0) return null;
+
+  const grid = (
+    <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {items.map((product) => (
+        <ProductCard key={product.slug} product={product} transitionName={plain ? undefined : `recent-${product.slug}`} />
+      ))}
+    </div>
+  );
+
+  if (plain) {
+    return (
+      <section className="mt-12">
+        <h2 className="serif text-3xl">Recently viewed</h2>
+        <div className="mt-6">{grid}</div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-12 md:px-6">
+      <h2 className="serif text-3xl">Recently viewed</h2>
+      <div className="mt-8">{grid}</div>
+    </section>
+  );
+}

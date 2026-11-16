@@ -1,0 +1,177 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+import { catalogSource, categoryList, categoryPhoto, type ShopCategory } from "@/lib/catalog";
+import { useStore } from "@/lib/store";
+import { AdminHeader, SolidButton } from "@/components/admin-shell";
+import { ImageUpload } from "@/components/image-upload";
+
+const blank = { slug: "", label: "", blurb: "", image: "", chart: "upper" as "upper" | "lower" };
+
+export default function CategoriesPage() {
+  const { saveCategory, removeCategory, reorderCategories, overrides } = useStore();
+  const categories = categoryList();
+  const [draft, setDraft] = useState(blank);
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function save(event: FormEvent) {
+    event.preventDefault();
+    const error = await saveCategory({
+      slug: draft.slug || undefined,
+      label: draft.label,
+      blurb: draft.blurb,
+      image: draft.image,
+      chart: draft.chart,
+    });
+    setMessage(error ?? `${draft.label.trim()} saved.`);
+    if (!error) setDraft(blank);
+  }
+
+  // Moves a category one place in the drawer, footer, and shop tabs.
+  async function move(index: number, direction: -1 | 1) {
+    const order = categories.map((category) => category.slug);
+    const target = index + direction;
+    if (target < 0 || target >= order.length) return;
+    [order[index], order[target]] = [order[target], order[index]];
+    const error = await reorderCategories(order);
+    if (error) setMessage(error);
+  }
+
+  async function remove(slug: string, label: string) {
+    const error = await removeCategory(slug);
+    setMessage(error ?? `${label} removed.`);
+    if (!error && draft.slug === slug) setDraft(blank);
+  }
+
+  return (
+    <div>
+      <AdminHeader title="Categories" />
+      <p className="mt-3 max-w-xl text-sm text-[#6d6960]">
+        Add a category here, then choose it on a product. The menu drawer, footer, and shop tabs list categories in this order, after New in. New in stays a
+        filter for pieces marked new.
+      </p>
+      {message && <p className="mt-4 text-sm text-[#6d6960]">{message}</p>}
+      <form onSubmit={(event) => void save(event)} className="mt-6 grid gap-3 border border-[#e6dfd4] bg-white p-4 sm:grid-cols-2">
+        <label className="text-sm">
+          Name
+          <input value={draft.label} onChange={(event) => setDraft({ ...draft, label: event.target.value })} required className="mt-1 h-10 w-full border border-[#e6dfd4] px-2 outline-none" />
+        </label>
+        <label className="text-sm sm:col-span-2">
+          Short line
+          <input value={draft.blurb} onChange={(event) => setDraft({ ...draft, blurb: event.target.value })} className="mt-1 h-10 w-full border border-[#e6dfd4] px-2 outline-none" />
+        </label>
+        <div className="text-sm sm:col-span-2">
+          <span>Category photo</span>
+          <div className="mt-1 flex items-center gap-3">
+            {draft.image ? <img src={draft.image} alt="" className="h-16 w-12 object-cover" /> : <span className="h-16 w-12 bg-[#f3efe8]" />}
+            <ImageUpload label={draft.image ? "REPLACE" : "UPLOAD"} onUploaded={(image) => setDraft({ ...draft, image })} />
+          </div>
+          <p className="mt-2 text-xs text-[#8a847c]">Portrait, 4:5. The tile crops to that shape.</p>
+        </div>
+        <div className="flex items-center gap-3 sm:col-span-2">
+          <SolidButton type="submit">{draft.slug ? "SAVE CHANGES" : "ADD CATEGORY"}</SolidButton>
+          {draft.slug && (
+            <button type="button" className="text-sm text-[#6d6960]" onClick={() => setDraft(blank)}>
+              Cancel
+            </button>
+          )}
+        </div>
+      </form>
+      <div className="mt-6 border border-[#e6dfd4] bg-white">
+        <ul className="divide-y divide-[#efeae2] md:hidden">
+          {categories.map((category, index) => {
+            const pieces = catalogSource().filter((product) => product.category === category.slug).length;
+            return (
+              <li key={category.slug} className="px-4 py-4 text-sm">
+                <span className="flex items-start justify-between gap-3">
+                  <button className="flex min-w-0 items-start gap-3 text-left" onClick={() => setDraft({ slug: category.slug, label: category.label, blurb: category.blurb, image: category.image, chart: category.chart })}>
+                    <TileThumb category={category} overrides={overrides} />
+                    <span className="min-w-0">
+                      <span className="block">{category.label}</span>
+                      <span className="mt-1 block text-xs text-[#8a847c]">{category.blurb || category.slug}</span>
+                      <MissingPhoto category={category} />
+                    </span>
+                  </button>
+                  <button type="button" className="shrink-0 text-[#ab6446] disabled:text-[#c4bfb6]" disabled={pieces > 0} onClick={() => void remove(category.slug, category.label)}>
+                    {pieces > 0 ? "In use" : "Remove"}
+                  </button>
+                </span>
+                <span className="mt-2 flex gap-4 text-[#6d6960]">
+                  <MoveButtons index={index} last={categories.length - 1} onMove={(direction) => void move(index, direction)} />
+                </span>
+                <p className="mt-2 text-[#6d6960]">
+                  {pieces} {pieces === 1 ? "piece" : "pieces"}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="hidden overflow-auto md:block">
+        <table className="w-full min-w-[640px] text-left text-sm">
+          <thead className="text-[11px] tracking-[0.14em] text-[#8a847c]">
+            <tr className="border-b border-[#e6dfd4]">
+              <th className="px-5 py-3 font-medium">NAME</th>
+              <th className="py-3 font-medium">PIECES</th>
+              <th className="py-3 font-medium">ORDER</th>
+              <th className="px-5 py-3 font-medium"> </th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.map((category, index) => {
+              const pieces = catalogSource().filter((product) => product.category === category.slug).length;
+              return (
+                <tr key={category.slug} className="border-b border-[#efeae2]">
+                  <td className="px-5 py-3">
+                    <button className="flex items-center gap-3 text-left" onClick={() => setDraft({ slug: category.slug, label: category.label, blurb: category.blurb, image: category.image, chart: category.chart })}>
+                      <TileThumb category={category} overrides={overrides} />
+                      <span>
+                        {category.label}
+                        <span className="block text-xs text-[#8a847c]">{category.blurb || category.slug}</span>
+                        <MissingPhoto category={category} />
+                      </span>
+                    </button>
+                  </td>
+                  <td>{pieces}</td>
+                  <td className="whitespace-nowrap text-[#6d6960]">
+                    <span className="flex gap-4">
+                      <MoveButtons index={index} last={categories.length - 1} onMove={(direction) => void move(index, direction)} />
+                    </span>
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    <button type="button" className="text-[#ab6446] disabled:text-[#c4bfb6]" disabled={pieces > 0} onClick={() => void remove(category.slug, category.label)}>
+                      {pieces > 0 ? "In use" : "Remove"}
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MoveButtons({ index, last, onMove }: { index: number; last: number; onMove: (direction: -1 | 1) => void }) {
+  return (
+    <>
+      <button type="button" className="disabled:opacity-40" disabled={index === 0} onClick={() => onMove(-1)}>
+        Earlier
+      </button>
+      <button type="button" className="disabled:opacity-40" disabled={index === last} onClick={() => onMove(1)}>
+        Later
+      </button>
+    </>
+  );
+}
+
+/** The picture this category shows on the homepage, as it will appear there. */
+function TileThumb({ category, overrides }: { category: ShopCategory; overrides: Parameters<typeof categoryPhoto>[1] }) {
+  return <img src={categoryPhoto(category, overrides).src} alt="" className="h-12 w-10 shrink-0 bg-[#f3efe8] object-cover" />;
+}
+
+function MissingPhoto({ category }: { category: ShopCategory }) {
+  if (category.image) return null;
+  return <span className="mt-1 block text-xs text-[#ab6446]">No photo of its own; the homepage borrows one from its products. Click to add one.</span>;
+}
