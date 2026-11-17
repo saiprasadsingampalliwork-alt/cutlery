@@ -22,8 +22,8 @@ const newsreader = Newsreader({
 
 export const metadata: Metadata = {
   title: {
-    default: "Earthen — Bakeware, knives, and grills",
-    template: "%s — Earthen",
+    default: "RathodGroup — Bakeware, knives, and grills",
+    template: "%s — RathodGroup",
   },
   description: "Cake moulds, knives, and charcoal grills, supplied from Visakhapatnam.",
 };

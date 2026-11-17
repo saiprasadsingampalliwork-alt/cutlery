@@ -63,7 +63,7 @@ export default function SettingsPage() {
       return;
     }
     const error = await inviteStaff({ name, email, role });
-    setNotice(error ? { tone: "error", text: error } : { tone: "saved", text: `${email} can sign in with password studio.` });
+    setNotice(error ? { tone: "error", text: error } : { tone: "saved", text: `${email} can sign in with the staff password.` });
     if (!error) {
       setName("");
       setEmail("");
@@ -215,7 +215,7 @@ export default function SettingsPage() {
               <Toggle label="Prices include GST" hint="Show tax-inclusive prices on the storefront" on={form.pricesIncludeGst} onChange={(value) => setForm({ ...form, pricesIncludeGst: value })} />
             </div>
           </Card>
-          <Card title="Studio address">
+          <Card title="Address">
             <p className="mb-3 text-sm text-[#6d6960]">Shown in the footer, on the contact page, and on the invoice.</p>
             <div className="grid gap-3">
               <Text label="Legal name" value={content.legalName} onChange={(legalName) => updateContent({ legalName })} />
@@ -527,7 +527,7 @@ function Toggle({ label, hint, on, onChange }: { label: string; hint: string; on
   );
 }
 
-/** Which states and UTs the studio delivers to. Checkout, the product page, and the API all follow this. */
+/** Which states and UTs the shop delivers to. Checkout, the product page, and the API all follow this. */
 function DeliveryAreas({ off, onChange }: { off: string[]; onChange: (off: string[]) => void }) {
   const closed = new Set(off);
   const open = ALL_REGIONS.length - closed.size;

@@ -23,7 +23,7 @@ const company = [
 
 export function Footer() {
   const { settings } = useStore();
-  const studio = siteContent(settings);
+  const details = siteContent(settings);
   const shop = [
     ...shopEntrances().map((category) => ({ href: `/shop?category=${category.slug}`, label: category.label })),
     ...audienceList().map((audience) => ({ href: `/shop?gender=${audience.slug}`, label: audience.label })),
@@ -42,7 +42,7 @@ export function Footer() {
       <div className="border-t border-line bg-[#f7f6f4]">
           <form onSubmit={subscribe} className="mx-auto max-w-7xl px-4 py-12 md:grid md:grid-cols-2 md:items-end md:gap-16 md:px-8">
             <div>
-              <h2 className="serif text-3xl">Join the Earthen list</h2>
+              <h2 className="serif text-3xl">Join the RathodGroup list</h2>
               <p className="mt-2 text-sm leading-6 text-muted">New pieces and restocks, and 10% off your first order. No other mail.</p>
             </div>
             {joined ? (
@@ -67,7 +67,7 @@ export function Footer() {
         </div>
       <div className="border-t border-line bg-white text-ink">
         <div className="mx-auto max-w-7xl px-4 py-12 md:px-8">
-          <p className="serif text-3xl">Earthen</p>
+          <p className="serif text-3xl">RathodGroup</p>
           <p className="mt-2 max-w-xs text-sm leading-6 text-muted">Bakeware, knives, grills, and machines for the kitchen.</p>
           <div className="mt-8 md:grid md:grid-cols-3 md:gap-10">
             <FooterGroup title="Shop" links={shop} />
@@ -75,25 +75,25 @@ export function Footer() {
             <FooterGroup title="Company" links={company} />
           </div>
           <p className="mt-10 text-xs leading-5 text-muted">
-            {studio.legalName}
+            {details.legalName}
             <span className="mx-2">·</span>
-            {studio.address}
+            {details.address}
           </p>
           <p className="mt-1 text-xs leading-5 text-muted">
             GSTIN {settings.gstin || brand.gstin}
             <span className="mx-2">·</span>
-            <a href={phoneHref(studio.phone)} className="inline-flex items-center gap-1 underline-offset-2 hover:text-ink">
+            <a href={phoneHref(details.phone)} className="inline-flex items-center gap-1 underline-offset-2 hover:text-ink">
               <Icon name="phone" className="h-3.5 w-3.5" />
-              {studio.phone}
+              {details.phone}
             </a>
             <span className="mx-2">·</span>
-            <a href={`mailto:${studio.email}`} className="inline-flex items-center gap-1 hover:text-ink">
+            <a href={`mailto:${details.email}`} className="inline-flex items-center gap-1 hover:text-ink">
               <Icon name="mail" className="h-3.5 w-3.5" />
-              {studio.email}
+              {details.email}
             </a>
           </p>
           <p className="mt-3 text-xs tracking-[0.14em] text-muted">UPI · VISA · MASTERCARD · RUPAY</p>
-          <p className="mt-3 text-xs text-muted">© {new Date().getFullYear()} Earthen. Prices in INR, inclusive of GST. {brand.delivery}</p>
+          <p className="mt-3 text-xs text-muted">© {new Date().getFullYear()} RathodGroup. Prices in INR, inclusive of GST. {brand.delivery}</p>
         </div>
       </div>
     </footer>

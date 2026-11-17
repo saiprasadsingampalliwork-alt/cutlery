@@ -6,7 +6,7 @@ import { AuthShell, Input } from "@/components/auth";
 import { useStore } from "@/lib/store";
 
 export default function ResetPage() {
-  const { requestPasswordReset, requestPasswordCode, resetPassword, resetPasswordWithCode, ready: studioReady } = useStore();
+  const { requestPasswordReset, requestPasswordCode, resetPassword, resetPasswordWithCode, ready: shopReady } = useStore();
   const [token, setToken] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [channel, setChannel] = useState<"email" | "whatsapp">("whatsapp");
@@ -106,7 +106,7 @@ export default function ResetPage() {
         <form onSubmit={choosePassword} className="space-y-3">
           <Input label="New password" type="password" value={password} onChange={setPassword} />
           {error && <p className="text-sm">{error}</p>}
-          <button disabled={!studioReady} className="h-12 w-full bg-ink text-xs tracking-[0.16em] text-cream disabled:opacity-50">UPDATE PASSWORD</button>
+          <button disabled={!shopReady} className="h-12 w-full bg-ink text-xs tracking-[0.16em] text-cream disabled:opacity-50">UPDATE PASSWORD</button>
         </form>
       ) : sent && channel === "email" ? (
         <div className="space-y-3 text-sm">
@@ -127,7 +127,7 @@ export default function ResetPage() {
           <Input label="Code" value={code} onChange={(value) => setCode(value.replace(/\D/g, "").slice(0, 6))} />
           <Input label="New password" type="password" value={password} onChange={setPassword} />
           {error && <p className="text-sm">{error}</p>}
-          <button disabled={!studioReady} className="h-12 w-full bg-ink text-xs tracking-[0.16em] text-cream disabled:opacity-50">UPDATE PASSWORD</button>
+          <button disabled={!shopReady} className="h-12 w-full bg-ink text-xs tracking-[0.16em] text-cream disabled:opacity-50">UPDATE PASSWORD</button>
         </form>
       ) : (
         <div className="space-y-4">
@@ -150,13 +150,13 @@ export default function ResetPage() {
             <form onSubmit={requestCode} className="space-y-3">
               <Input label="Mobile" value={phone} onChange={(value) => setPhone(value.replace(/\D/g, "").slice(0, 10))} />
               {error && <p className="text-sm">{error}</p>}
-              <button disabled={!studioReady} className="h-12 w-full bg-ink text-xs tracking-[0.16em] text-cream disabled:opacity-50">SEND CODE</button>
+              <button disabled={!shopReady} className="h-12 w-full bg-ink text-xs tracking-[0.16em] text-cream disabled:opacity-50">SEND CODE</button>
             </form>
           ) : (
             <form onSubmit={requestLink} className="space-y-3">
               <Input label="Email" type="email" value={email} onChange={setEmail} />
               {error && <p className="text-sm">{error}</p>}
-              <button disabled={!studioReady} className="h-12 w-full bg-ink text-xs tracking-[0.16em] text-cream disabled:opacity-50">SEND LINK</button>
+              <button disabled={!shopReady} className="h-12 w-full bg-ink text-xs tracking-[0.16em] text-cream disabled:opacity-50">SEND LINK</button>
             </form>
           )}
         </div>

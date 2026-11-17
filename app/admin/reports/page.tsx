@@ -113,7 +113,7 @@ export default function ReportsPage() {
   };
 
   function exportReport() {
-    downloadCsv("earthen-gst.csv", [
+    downloadCsv("rathodgroup-gst.csv", [
       ["order", "date", "state", "payment", "taxable", "cgst", "sgst", "igst", "total"],
       ...live.map((order) => {
         const gst = gstSplit(order);

@@ -10,7 +10,7 @@ export default function LabelPage() {
   if (!order) return <p className="p-8">Order not found.</p>;
   return (
     <div className="mx-auto max-w-md p-8">
-      <p className="tracking-[0.28em]">EARTHEN</p>
+      <p className="tracking-[0.28em]">RATHODGROUP</p>
       <h1 className="serif mt-4 text-3xl">Shipping label</h1>
       <p className="mt-2 text-sm">{order.number}</p>
       <p className="mt-6 text-sm">

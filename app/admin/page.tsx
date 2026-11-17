@@ -38,7 +38,7 @@ export default function DashboardPage() {
         actions={
           <OutlineButton
             onClick={() =>
-              downloadCsv("earthen-orders.csv", [
+              downloadCsv("rathodgroup-orders.csv", [
                 ["order", "date", "customer", "total", "status", "payment"],
                 ...orders.map((order) => [order.number, order.createdAt.slice(0, 10), order.address.name, String(order.total), order.status, order.payment]),
               ])

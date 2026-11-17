@@ -329,7 +329,7 @@ export default function ProductEditorPage() {
       <h2 className="mt-10 text-sm">Photos</h2>
       <p className="mt-2 max-w-xl text-sm text-[#6d6960]">
         Up to 8. The first photo is the one on the shop card. Use a portrait, 4:5, about 1600 × 2000. JPEG, PNG, or WebP, under 6 MB.
-        {photos.length === 0 ? " Until you add one, the shop keeps the current picture or the studio drawing." : " Removing every photo brings that original picture back."}
+        {photos.length === 0 ? " Until you add one, the shop keeps the current picture." : " Removing every photo brings that original picture back."}
       </p>
       <ul className="mt-4 space-y-3">
         {photos.map((photo, index) => (

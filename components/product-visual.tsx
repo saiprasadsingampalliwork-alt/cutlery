@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
 import * as React from "react";
 import { PLACEHOLDER_IMAGE, type ProductPhoto } from "@/lib/catalog";
-import type { Silhouette } from "@/lib/studio";
+import type { Silhouette } from "@/lib/shop";
 
 const ViewTransition = (
   React as unknown as {

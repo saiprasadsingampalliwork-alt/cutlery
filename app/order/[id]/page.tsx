@@ -11,9 +11,9 @@ export default function OrderPage() {
   const { orders, ready } = useStore();
   const [celebrate, setCelebrate] = useState(false);
   useEffect(() => {
-    if (sessionStorage.getItem("earthen-placed") !== id) return;
+    if (sessionStorage.getItem("rathodgroup-placed") !== id) return;
     setCelebrate(true);
-    sessionStorage.removeItem("earthen-placed");
+    sessionStorage.removeItem("rathodgroup-placed");
   }, [id]);
   const order = orders.find((entry) => entry.id === id);
   if (!ready) return null;

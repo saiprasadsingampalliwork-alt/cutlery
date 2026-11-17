@@ -44,7 +44,7 @@ export default function CustomersPage() {
         actions={
           <OutlineButton
             onClick={() =>
-              downloadCsv("earthen-customers.csv", [
+              downloadCsv("rathodgroup-customers.csv", [
                 ["name", "email", "orders", "spent", "last order"],
                 ...rows.map((row) => [row.name, row.email, String(row.count), String(row.spent), row.last ?? ""]),
               ])

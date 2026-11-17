@@ -1,8 +1,8 @@
 export type Silhouette = "overshirt" | "tee" | "shirt" | "trouser" | "skirt" | "cardigan" | "jacket";
 
-export type StudioView = "worn" | "fabric" | "flat" | "stitch";
+export type ShopView = "worn" | "fabric" | "flat" | "stitch";
 
-export const STUDIO_VIEWS: { id: StudioView; label: string }[] = [
+export const SHOP_VIEWS: { id: ShopView; label: string }[] = [
   { id: "worn", label: "Worn" },
   { id: "fabric", label: "Cloth" },
   { id: "flat", label: "Flat" },
@@ -103,7 +103,7 @@ function stitch(hex: string) {
   );
 }
 
-export function studioSrc(view: StudioView, hex: string, silhouette: Silhouette) {
+export function shopSrc(view: ShopView, hex: string, silhouette: Silhouette) {
   if (view === "fabric") return fabric(hex);
   if (view === "flat") return flat(hex, silhouette);
   if (view === "stitch") return stitch(hex);

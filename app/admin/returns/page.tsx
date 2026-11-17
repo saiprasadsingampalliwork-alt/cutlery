@@ -46,7 +46,7 @@ export default function ReturnsPage() {
         actions={
           <OutlineButton
             onClick={() =>
-              downloadCsv("earthen-returns.csv", [
+              downloadCsv("rathodgroup-returns.csv", [
                 ["order", "customer", "reason", "type", "amount", "status"],
                 ...requests.map((order) => [
                   order.number,

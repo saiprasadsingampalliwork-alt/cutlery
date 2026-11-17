@@ -100,7 +100,7 @@ function ProductDetail({ product: initial }: { product: Product }) {
     }
     setNotice(null);
     setAdded(true);
-    window.dispatchEvent(new CustomEvent("earthen:bag", { detail: { slug: product.slug, color, size } }));
+    window.dispatchEvent(new CustomEvent("rathodgroup:bag", { detail: { slug: product.slug, color, size } }));
     window.setTimeout(() => setAdded(false), 1400);
   }
 

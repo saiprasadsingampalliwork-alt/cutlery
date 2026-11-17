@@ -57,7 +57,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-[#fbf8f4] md:grid md:grid-cols-[216px_1fr]">
       <aside className="hidden bg-[#2a2925] text-[#f3efe8] md:block md:min-h-screen">
         <div className="px-6 pb-4 pt-8">
-          <p className="text-[13px] tracking-[0.28em]">EARTHEN</p>
+          <p className="text-[13px] tracking-[0.28em]">RATHODGROUP</p>
           <p className="mt-1 text-[10px] tracking-[0.22em] text-[#f3efe8]/55">ADMIN</p>
         </div>
         <nav className="space-y-1 px-3 pb-6">
@@ -89,7 +89,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
               <span className="h-px bg-[#2a2925]" />
             </span>
           </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[15px] tracking-[0.32em] text-[#2a2925]">EARTHEN</p>
+          <p className="absolute left-1/2 -translate-x-1/2 text-[15px] tracking-[0.32em] text-[#2a2925]">RATHODGROUP</p>
           <button
             type="button"
             onClick={staffSignOut}
@@ -102,7 +102,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         {menu && (
           <div className="fixed inset-0 z-50 overflow-y-auto bg-[#f7f4ee]">
             <div className="flex h-16 items-center justify-between border-b border-[#e4ddd2] px-4">
-              <span className="tracking-[0.32em] text-[#2a2925]">EARTHEN</span>
+              <span className="tracking-[0.32em] text-[#2a2925]">RATHODGROUP</span>
               <button type="button" className="flex h-11 w-11 items-center justify-center" onClick={() => setMenu(false)} aria-label="Close menu">
                 <Icon name="close" />
               </button>
@@ -125,7 +125,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
       <div className="min-w-0 px-5 py-6 md:px-10 md:py-8">
         {allowed ? children : (
           <>
-            <AdminHeader title="Studio" />
+            <AdminHeader title="Admin" />
             <p className="mt-8 text-sm text-[#6d6960]">Your role does not open this page.</p>
           </>
         )}

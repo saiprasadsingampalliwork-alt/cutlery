@@ -155,7 +155,7 @@ export default function SignInPage() {
               Create an account
             </Link>
           </p>
-          {/* <p className="text-center text-sm text-muted">Aisha&apos;s account is aisha@earthen.in, password quietclothes.</p> */}
+          {/* <p className="text-center text-sm text-muted">Aisha&apos;s account is aisha@rathodgroup.in, password quietclothes.</p> */}
           <button className="replay" type="button" onClick={replayEntrance}>
             Replay entrance
           </button>
@@ -169,7 +169,7 @@ export default function SignInPage() {
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/15 to-transparent" />
         <div className="relative p-7 text-cream md:p-12">
-          <p className="settle text-[15px] tracking-[0.22em] [--i:0]">EARTHEN</p>
+          <p className="settle text-[15px] tracking-[0.22em] [--i:0]">RATHODGROUP</p>
           <p className="serif settle mt-3 max-w-[11em] text-4xl leading-[1.1] md:text-5xl [--i:1]">For the kitchen you work in.</p>
         </div>
       </section>

@@ -94,7 +94,7 @@ export function ImageUpload({
 function plainUploadError(reason: unknown) {
   const message = reason instanceof Error ? reason.message : "";
   if (/failed to fetch|networkerror|load failed/i.test(message)) {
-    return "The studio could not be reached, so the photo was not added. Try again in a moment.";
+    return "The shop could not be reached, so the photo was not added. Try again in a moment.";
   }
   return message || "Could not upload that photo.";
 }

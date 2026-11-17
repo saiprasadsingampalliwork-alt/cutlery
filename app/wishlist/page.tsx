@@ -67,7 +67,7 @@ function WishCard({ product, color }: { product: Product; color: string }) {
     setNote(null);
     setAdded(true);
     window.setTimeout(() => setAdded(false), 1400);
-    window.dispatchEvent(new CustomEvent("earthen:bag", { detail: { slug: product.slug, color: swatch.name, size } }));
+    window.dispatchEvent(new CustomEvent("rathodgroup:bag", { detail: { slug: product.slug, color: swatch.name, size } }));
   }
 
   return (

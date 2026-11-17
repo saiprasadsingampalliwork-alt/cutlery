@@ -30,8 +30,8 @@ export function MiniCart() {
       setOpen(true);
       setFresh(detail?.slug ? `${detail.slug}|${detail.color}|${detail.size}` : null);
     }
-    window.addEventListener("earthen:bag", openBag);
-    return () => window.removeEventListener("earthen:bag", openBag);
+    window.addEventListener("rathodgroup:bag", openBag);
+    return () => window.removeEventListener("rathodgroup:bag", openBag);
   }, []);
 
   useEffect(() => {

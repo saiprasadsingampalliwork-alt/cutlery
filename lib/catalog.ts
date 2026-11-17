@@ -1,4 +1,4 @@
-import type { Silhouette } from "@/lib/studio";
+import type { Silhouette } from "@/lib/shop";
 import { kitchenPieces } from "./kitchen";
 
 // Each piece carries the sizes printed for it: a diameter, a length, or Lite and Heavy.

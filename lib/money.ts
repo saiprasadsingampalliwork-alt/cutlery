@@ -25,7 +25,7 @@ export const COUPONS: Coupon[] = [
     apply: (subtotal) => Math.round(subtotal * 0.1),
   },
   {
-    code: "EARTHEN200",
+    code: "RATHODGROUP200",
     label: "₹200 off orders over ₹1,999",
     apply: (subtotal) => (subtotal >= 1999 ? 200 : 0),
   },
@@ -50,7 +50,7 @@ export type CouponRecord = {
 
 export const defaultCoupons: CouponRecord[] = [
   { code: "WELCOME10", type: "percent", value: 10, minOrder: 0, usageLimit: 500, used: 0, starts: "", ends: "", active: true },
-  { code: "EARTHEN200", type: "fixed", value: 200, minOrder: 1999, usageLimit: 200, used: 0, starts: "", ends: "", active: true },
+  { code: "RATHODGROUP200", type: "fixed", value: 200, minOrder: 1999, usageLimit: 200, used: 0, starts: "", ends: "", active: true },
   { code: "FREESHIP", type: "free_shipping", value: 0, minOrder: 0, usageLimit: 200, used: 0, starts: "", ends: "", active: true },
 ];
 

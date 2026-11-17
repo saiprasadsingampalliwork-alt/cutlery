@@ -16,7 +16,7 @@ const payments: { id: Order["payment"]; label: string; hint: string }[] = [
   { id: "upi", label: "UPI", hint: "GPay, PhonePe, BHIM" },
   { id: "card", label: "Card", hint: "Visa, Mastercard, RuPay" },
   { id: "netbanking", label: "Net banking", hint: "All major banks" },
-  { id: "cod", label: "Cash on delivery", hint: "Fee and limit are set by the studio" },
+  { id: "cod", label: "Cash on delivery", hint: "A fee may apply, up to the order limit" },
 ];
 
 
@@ -90,7 +90,7 @@ export default function CheckoutPage() {
       return result;
     }
     clearPending();
-    sessionStorage.setItem("earthen-placed", result.id);
+    sessionStorage.setItem("rathodgroup-placed", result.id);
     router.push(`/order/${result.id}`);
     return null;
   }
@@ -219,7 +219,7 @@ export default function CheckoutPage() {
         setError(result);
         return;
       }
-      sessionStorage.setItem("earthen-placed", result.id);
+      sessionStorage.setItem("rathodgroup-placed", result.id);
       router.push(`/order/${result.id}`);
     } finally {
       setPaying(false);
@@ -328,7 +328,7 @@ export default function CheckoutPage() {
                   className={`border px-4 py-3 text-left ${payment === option.id ? "border-ink bg-paper" : "border-line"} disabled:opacity-40`}
                 >
                   <span className="block text-sm">{option.label}</span>
-                  <span className="text-sm text-muted">{disabled ? (option.id !== "cod" ? "Coming soon. Pay by cash on delivery for now." : rules.codEnabled === false ? "Turned off in studio settings" : `Unavailable above ${formatINR(rules.codMax)}`) : option.id === "cod" ? `${formatINR(rules.codFee)} fee · up to ${formatINR(rules.codMax)}` : option.hint}</span>
+                  <span className="text-sm text-muted">{disabled ? (option.id !== "cod" ? "Coming soon. Pay by cash on delivery for now." : rules.codEnabled === false ? "Turned off in settings" : `Unavailable above ${formatINR(rules.codMax)}`) : option.id === "cod" ? `${formatINR(rules.codFee)} fee · up to ${formatINR(rules.codMax)}` : option.hint}</span>
                 </button>
               );
             })}
@@ -449,7 +449,7 @@ type PendingPayment = {
   razorpay: { orderId: string; paymentId: string; signature: string };
 };
 
-const PENDING_KEY = "earthen-pending-payment";
+const PENDING_KEY = "rathodgroup-pending-payment";
 
 function readPending(): PendingPayment | null {
   try {

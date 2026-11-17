@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { StudioReach } from "@/components/studio-reach";
+import { ShopReach } from "@/components/shop-reach";
 
 export const metadata = { title: "Our story" };
 
@@ -7,7 +7,7 @@ const chapters = [
   {
     n: "01",
     title: "The counter",
-    body: "Two of us started in 2016 with cake moulds and a rolling pin, sold across the counter to bakeries in Siripuram.",
+    body: "Two of us started in 2016 with cake moulds and a rolling pin, sold across the counter to bakeries in Dabagardens.",
     href: "/shop?category=bakeware",
     cta: "The moulds",
   },
@@ -21,7 +21,7 @@ const chapters = [
   {
     n: "03",
     title: "From Visakhapatnam",
-    body: "One hundred and seventy-four pieces, packed at Coconut Avenue. Prices include GST. We collect returns ourselves.",
+    body: "One hundred and seventy-four pieces, packed at Dabagardens. Prices include GST. We collect returns ourselves.",
     href: "/contact",
     cta: "Talk to us",
   },
@@ -83,7 +83,7 @@ export default function AboutPage() {
         </div>
 
         <p className="mx-auto mt-8 max-w-xl px-6 text-center text-sm leading-7 text-ink/80">
-          <StudioReach />
+          <ShopReach />
         </p>
       </section>
     </article>

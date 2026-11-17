@@ -79,7 +79,7 @@ export function Header() {
               </span>
             </button>
             <Link href="/" className="serif text-[26px] leading-none tracking-tight md:text-[32px]">
-              Earthen
+              RathodGroup
             </Link>
           </div>
 
@@ -125,7 +125,7 @@ export function Header() {
       {menu && (
         <div className="fixed inset-0 z-50 bg-white md:hidden">
           <div className="flex h-16 items-center justify-between border-b border-line px-4">
-            <span className="serif text-2xl">Earthen</span>
+            <span className="serif text-2xl">RathodGroup</span>
             <button className="flex h-11 w-11 items-center justify-center" onClick={() => setMenu(false)} aria-label="Close menu">
               <Icon name="close" />
             </button>

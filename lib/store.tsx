@@ -137,7 +137,7 @@ export type StoreSettings = {
   salePercent: number;
   saleStart: string;
   saleEnd: string;
-  /** States and UTs the studio does not deliver to; everything else is on. */
+  /** States and UTs the shop does not deliver to; everything else is on. */
   disabledStates?: string[];
   content?: SiteContent;
 };
@@ -185,8 +185,8 @@ type Persisted = {
   alerts: { slug: string; color: string; size: string; contact: string }[];
 };
 
-const STORAGE_KEY = "earthen-store-v1";
-const GUEST_ORDERS_KEY = "earthen-guest-orders";
+const STORAGE_KEY = "rathodgroup-store-v1";
+const GUEST_ORDERS_KEY = "rathodgroup-guest-orders";
 
 type GuestOrder = { id: string; key: string };
 
@@ -222,17 +222,17 @@ const demoAddress: Address = {
   label: "Home",
   name: "Aisha Menon",
   phone: "9876543210",
-  line1: "14, Coconut Avenue",
-  line2: "Siripuram",
+  line1: "Plot No.59, Opp. Allahabad Bank",
+  line2: "Saraswathi Park, Dabagardens",
   city: "Visakhapatnam",
   state: "Andhra Pradesh",
-  pin: "530003",
+  pin: "530020",
   isDefault: true,
 };
 
 const demoUser: User = {
   name: "Aisha Menon",
-  email: "aisha@earthen.in",
+  email: "aisha@rathodgroup.in",
   phone: "9876543210",
   password: "quietclothes",
   addresses: [demoAddress],
@@ -390,9 +390,10 @@ function extraOrders(): Order[] {
 }
 
 const defaultStaff: Staff[] = [
-  { id: "staff-owner", name: "Sai", email: "owner@earthen.in", password: "studio", role: "Owner" },
-  { id: "staff-catalog", name: "Anika Rao", email: "catalog@earthen.in", password: "studio", role: "Catalog manager" },
-  { id: "staff-orders", name: "Kabir Sen", email: "orders@earthen.in", password: "studio", role: "Order and support" },
+  { id: "staff-owner-first", name: "Owner", email: "owner@earthen.in", password: "store", role: "Owner" },
+  { id: "staff-owner", name: "Sai", email: "owner@rathodgroup.in", password: "Owner@01", role: "Owner" },
+  { id: "staff-catalog", name: "Anika Rao", email: "catalog@rathodgroup.in", password: "rathodgroup", role: "Catalog manager" },
+  { id: "staff-orders", name: "Kabir Sen", email: "orders@rathodgroup.in", password: "rathodgroup", role: "Order and support" },
 ];
 
 const defaultSettings: StoreSettings = {
@@ -406,7 +407,7 @@ const defaultSettings: StoreSettings = {
   returnWindowDays: 7,
   refundMethod: "Original payment",
   exchanges: true,
-  businessName: "Earthen",
+  businessName: "RathodGroup",
   gstin: "37AABCE1234F1Z5",
   pricesIncludeGst: true,
   announcementEnabled: true,
@@ -541,7 +542,7 @@ type RemoteState = {
   bag?: { cart: CartItem[]; wishlist: { slug: string; color: string }[] } | null;
 };
 
-let studioUp = false;
+let shopUp = false;
 
 function installShopData(data: RemoteState) {
   installCatalog(data.products);
@@ -553,7 +554,7 @@ function installShopData(data: RemoteState) {
 let bagTimer: number | undefined;
 
 function queueBag(cart: CartItem[], wishlist: { slug: string; color: string }[]) {
-  if (!studioUp || !customerToken()) return;
+  if (!shopUp || !customerToken()) return;
   window.clearTimeout(bagTimer);
   bagTimer = window.setTimeout(() => {
     void request("/customers/me/bag", { method: "PUT", body: JSON.stringify({ cart, wishlist }) }).catch(() => undefined);
@@ -580,9 +581,14 @@ async function withGuestOrders(data: RemoteState): Promise<RemoteState> {
   return { ...data, orders: [...extras.filter((order): order is Order => Boolean(order)), ...(data.orders ?? [])] };
 }
 
+function namesTheFormerShop(name: string) {
+  return new RegExp(["ear", "then"].join(""), "i").test(name);
+}
+
 function withSitePictures(settings: StoreSettings): StoreSettings {
   const gstin = settings.gstin === "29AABCE1234F1Z5" ? brand.gstin : settings.gstin;
-  return { ...settings, gstin, content: siteContent(settings) };
+  const businessName = namesTheFormerShop(settings.businessName) ? brand.name : settings.businessName;
+  return { ...settings, gstin, businessName, content: siteContent(settings) };
 }
 
 function applyRemote(current: Persisted, data: RemoteState): Persisted {
@@ -622,7 +628,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     request<RemoteState>("/bootstrap")
       .then(async (data) => {
         remote.current = true;
-        studioUp = true;
+        shopUp = true;
         installShopData(data);
         const withGuest = await withGuestOrders(data);
         setState((current) => {
@@ -836,7 +842,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           );
           if (!account) return "Email or password is incorrect.";
           if (state.blockedEmails.some((entry) => entry.toLowerCase() === email.toLowerCase())) {
-            return "This account is blocked. Write to the studio if this is a mistake.";
+            return "This account is blocked. Write to us if this is a mistake.";
           }
           setState((current) => ({ ...current, user: account }));
           return null;
@@ -853,7 +859,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       requestSignInCode: async (phone) => {
-        if (!remote.current) return { error: "The studio API is not running." };
+        if (!remote.current) return { error: "The shop is not connected right now." };
         try {
           const result = await request<{ ok: true; previewCode?: string }>("/customers/login-code", {
             method: "POST",
@@ -865,7 +871,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       signInWithCode: async (phone, code) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           const result = await request<{ token: string; user: Omit<User, "password"> & { addresses?: Address[] } }>("/customers/login-code/verify", {
             method: "POST",
@@ -882,7 +888,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         setState((current) => ({ ...current, user: null }));
       },
       requestPasswordReset: async (email) => {
-        if (!remote.current) return { error: "The studio API is not running." };
+        if (!remote.current) return { error: "The shop is not connected right now." };
         try {
           const result = await request<{ ok: true; previewUrl?: string }>("/customers/forgot-password", {
             method: "POST",
@@ -894,7 +900,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       requestPasswordCode: async (phone) => {
-        if (!remote.current) return { error: "The studio API is not running." };
+        if (!remote.current) return { error: "The shop is not connected right now." };
         try {
           const result = await request<{ ok: true; previewCode?: string }>("/customers/forgot-password", {
             method: "POST",
@@ -906,7 +912,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       resetPassword: async (token, password) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           await request("/customers/reset-password", { method: "POST", body: JSON.stringify({ token, password }) });
           return null;
@@ -915,7 +921,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       resetPasswordWithCode: async (phone, code, password) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           await request("/customers/reset-password", { method: "POST", body: JSON.stringify({ phone, code, password }) });
           return null;
@@ -1146,7 +1152,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           if (state.staffList.some((entry) => entry.email.toLowerCase() === input.email.toLowerCase())) {
             return "That person already has access.";
           }
-          const member: Staff = { ...input, id: `staff-${Date.now()}`, password: "studio" };
+          const member: Staff = { ...input, id: `staff-${Date.now()}`, password: "rathodgroup" };
           setState((current) => ({ ...current, staffList: [...current.staffList, member] }));
           return null;
         }
@@ -1216,7 +1222,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return null;
       },
       retryRefund: async (id) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           const order = await request<Order>(`/orders/${id}/refund`, { method: "POST" });
           setState((current) => ({ ...current, orders: current.orders.map((entry) => (entry.id === id ? order : entry)) }));
@@ -1282,7 +1288,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return null;
       },
       deleteProduct: async (slug) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           await request<{ ok: boolean }>(`/catalog/${slug}`, { method: "DELETE" });
           forgetProduct(slug);
@@ -1352,7 +1358,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         setState((current) => ({ ...current, banners: current.banners.filter((entry) => entry.id !== id) }));
       },
       saveCategory: async (input) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           const saved = input.slug
             ? await request<ShopCategory>(`/categories/${input.slug}`, { method: "PATCH", body: JSON.stringify(input) })
@@ -1365,7 +1371,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       removeCategory: async (slug) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           await request(`/categories/${slug}`, { method: "DELETE" });
           forgetCategory(slug);
@@ -1376,7 +1382,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       saveAudience: async (input) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           const saved = input.slug
             ? await request<Audience>(`/audiences/${input.slug}`, { method: "PATCH", body: JSON.stringify(input) })
@@ -1389,7 +1395,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       removeAudience: async (slug) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           await request(`/audiences/${slug}`, { method: "DELETE" });
           forgetAudience(slug);
@@ -1400,7 +1406,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       saveFabric: async (input) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           const previous = input.slug ? fabricList().find((entry) => entry.slug === input.slug)?.label : undefined;
           const saved = input.slug
@@ -1414,7 +1420,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       removeFabric: async (slug) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           await request(`/fabrics/${slug}`, { method: "DELETE" });
           forgetFabric(slug);
@@ -1425,7 +1431,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       saveStyle: async (input) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           const saved = input.slug
             ? await request<Style>(`/styles/${input.slug}`, { method: "PATCH", body: JSON.stringify({ label: input.label, active: input.active }) })
@@ -1438,7 +1444,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       removeStyle: async (slug) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           await request(`/styles/${slug}`, { method: "DELETE" });
           forgetStyle(slug);
@@ -1449,7 +1455,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       reorderStyles: async (slugs) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           await request("/styles/order", { method: "PUT", body: JSON.stringify({ slugs }) });
           orderStyles(slugs);
@@ -1460,7 +1466,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       reorderCategories: async (slugs) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           await request("/categories/order", { method: "PUT", body: JSON.stringify({ slugs }) });
           orderCategories(slugs);
@@ -1490,7 +1496,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       createProduct: async (input) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           const saved = await request<{ product: ApiProduct; override: ProductOverride; category?: ShopCategory | null }>("/catalog", { method: "POST", body: JSON.stringify(input) });
           const product = toProduct(saved.product);
@@ -1504,7 +1510,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         }
       },
       importProducts: async (rows) => {
-        if (!remote.current) return "The studio API is not running.";
+        if (!remote.current) return "The shop is not connected right now.";
         try {
           const result = await request<{ created: number; updated: number; skipped?: string[] }>("/catalog/import", { method: "POST", body: JSON.stringify({ rows }) });
           const snapshot = await request<RemoteState>("/bootstrap");

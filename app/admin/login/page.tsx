@@ -24,8 +24,8 @@ export default function AdminLoginPage() {
   return (
     <div className="grid min-h-screen place-items-center bg-cream px-4">
       <form onSubmit={submit} className="w-full max-w-sm">
-        <p className="tracking-[0.28em]">EARTHEN</p>
-        <h1 className="serif mt-3 text-4xl">Studio</h1>
+        <p className="tracking-[0.28em]">RATHODGROUP</p>
+        <h1 className="serif mt-3 text-4xl">Sign in</h1>
         <p className="mt-2 text-sm text-muted">Staff sign in. Customers use the store account.</p>
         <label className="mt-6 block text-sm">
           Email
@@ -38,7 +38,6 @@ export default function AdminLoginPage() {
         {error && <p className="mt-3 text-sm text-terra">{error}</p>}
         {staff && <p className="mt-3 text-sm">Signed in as {staff.name}.</p>}
         <button className="mt-5 h-12 w-full bg-ink text-xs tracking-[0.16em] text-cream">SIGN IN</button>
-        {/* <p className="mt-4 text-xs text-muted">Owner: owner@earthen.in / studio. Catalog and orders staff use the same password.</p> */}
       </form>
     </div>
   );

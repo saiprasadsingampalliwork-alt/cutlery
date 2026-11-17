@@ -124,7 +124,7 @@ export function OrderDetail({ order, confirmation = false, celebrate = false }: 
             ? `Your refund of ${formatINR(order.total)} is complete. It can take 5–7 working days to show in your account.`
             : order.refundStatus === "pending"
               ? `Your refund of ${formatINR(order.total)} has started. It reaches your account in 5–7 working days.`
-              : `Your refund of ${formatINR(order.total)} is being handled by the studio. We will write to you when it is on its way.`}
+              : `Your refund of ${formatINR(order.total)} is being handled. We will write to you when it is on its way.`}
         </p>
       )}
 
@@ -164,7 +164,7 @@ export function OrderDetail({ order, confirmation = false, celebrate = false }: 
 
 export function Invoice({ order }: { order: Order }) {
   const { settings } = useStore();
-  const studio = siteContent(settings);
+  const shop = siteContent(settings);
   const lines = order.items.map((item) => {
     const gst = includedGst(item.price);
     return { ...item, ...gst, lineTax: gst.tax * item.quantity, lineTaxable: gst.taxable * item.quantity };
@@ -176,11 +176,11 @@ export function Invoice({ order }: { order: Order }) {
     <div className="mx-auto max-w-3xl bg-paper px-6 py-10 print:max-w-none">
       <div className="flex items-start justify-between">
         <div>
-          <p className="tracking-[0.28em]">EARTHEN</p>
-          <p className="mt-2 text-sm text-muted">{studio.legalName}</p>
-          <p className="text-sm text-muted">{studio.address}</p>
+          <p className="tracking-[0.28em]">RATHODGROUP</p>
+          <p className="mt-2 text-sm text-muted">{shop.legalName}</p>
+          <p className="text-sm text-muted">{shop.address}</p>
           <p className="text-sm text-muted">GSTIN {settings.gstin || brand.gstin}</p>
-          <p className="text-sm text-muted">{studio.phone}</p>
+          <p className="text-sm text-muted">{shop.phone}</p>
         </div>
         <div className="text-right text-sm">
           <p>Tax invoice</p>

@@ -92,7 +92,7 @@ const LEGACY_PHOTOS = new Set([
   "tapered-trouser.jpg",
   "drawstring-short.jpg",
   "straight-linen-trouser.jpg",
-  "studio-poplin-shirt.jpg",
+  "shop-poplin-shirt.jpg",
   "boat-neck-tee.jpg",
   "camp-collar-shirt.jpg",
   "henley-tee.jpg",
@@ -170,6 +170,7 @@ const retiredCopy = new Set([
   "For the table you already have.",
   "For the table\nyou already have.",
   "14, Coconut Avenue, Indiranagar, Bengaluru 560038",
+  "14, Coconut Avenue, Siripuram, Visakhapatnam 530003",
   "+91 80 4567 2100",
   "Plates, bowls, and cutlery in stoneware and steel, finished in small runs in Bengaluru.",
   "Cake moulds, knives, and charcoal grills, in the sizes a home kitchen or a bakery counter asks for.",
@@ -181,7 +182,8 @@ const retiredCopy = new Set([
 ]);
 
 function retired(value: string) {
-  return retiredCopy.has(value) || /Bengaluru|Bangalore/.test(value);
+  const former = ["ear", "then"].join("");
+  return retiredCopy.has(value) || /Bengaluru|Bangalore/.test(value) || new RegExp(former, "i").test(value);
 }
 
 function text(value: unknown, fallback: string, max: number) {

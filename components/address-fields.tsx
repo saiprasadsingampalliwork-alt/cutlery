@@ -35,7 +35,7 @@ export function AddressFields({
 }: {
   value: AddressDraft;
   onChange: (next: AddressDraft) => void;
-  /** States the studio does not deliver to. */
+  /** States the shop does not deliver to. */
   off: Set<string>;
   /** At checkout those states cannot be chosen; in the address book they can, with a note. */
   blockOff?: boolean;

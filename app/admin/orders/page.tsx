@@ -25,7 +25,7 @@ export default function OrdersPage() {
         actions={
           <OutlineButton
             onClick={() =>
-              downloadCsv("earthen-orders.csv", [
+              downloadCsv("rathodgroup-orders.csv", [
                 ["order", "date", "customer", "items", "total", "payment", "status"],
                 ...rows.map((order) => [
                   order.number,

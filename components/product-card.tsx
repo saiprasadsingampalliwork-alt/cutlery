@@ -7,7 +7,7 @@ import { ProductVisual } from "@/components/product-visual";
 import { liveProduct, PLACEHOLDER_IMAGE, unitsAvailable, type Product } from "@/lib/catalog";
 import { formatINR } from "@/lib/money";
 import { withStoreSale } from "@/lib/sale";
-import type { Silhouette } from "@/lib/studio";
+import type { Silhouette } from "@/lib/shop";
 import { useStore } from "@/lib/store";
 import { useHydrated } from "@/lib/use-hydrated";
 
@@ -82,7 +82,7 @@ export function ProductCard({ product, transitionName }: { product: Product; tra
     setPicker(null);
     setAdded(true);
     window.setTimeout(() => setAdded(false), 700);
-    window.dispatchEvent(new CustomEvent("earthen:bag", { detail: { slug: live.slug, color, size } }));
+    window.dispatchEvent(new CustomEvent("rathodgroup:bag", { detail: { slug: live.slug, color, size } }));
   }
 
   return (
