@@ -19,10 +19,7 @@ export function Header() {
   const [menu, setMenu] = useState(false);
   const [search, setSearch] = useState(false);
   const [query, setQuery] = useState("");
-  const [hidden, setHidden] = useState(false);
-  const [solid, setSolid] = useState(false);
   const [tick, setTick] = useState(false);
-  const lastY = useRef(0);
   const seenCount = useRef(false);
 
   useEffect(() => {
@@ -39,21 +36,6 @@ export function Header() {
   }, [menu, search]);
 
   useEffect(() => {
-    function onScroll() {
-      const y = window.scrollY;
-      setSolid(y > 12);
-      const delta = y - lastY.current;
-      if (menu || search || y < 72) setHidden(false);
-      else if (delta > 8) setHidden(true);
-      else if (delta < -8) setHidden(false);
-      lastY.current = y;
-    }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [menu, search]);
-
-  useEffect(() => {
     if (!seenCount.current) {
       seenCount.current = true;
       return;
@@ -64,60 +46,61 @@ export function Header() {
   }, [totals.count]);
 
   return (
-    <header className={`site-header${hidden ? " is-hidden" : ""}${solid ? " is-solid" : ""}`}>
+    <header className="site-header">
       {announcement && (
-        <div className="bg-olive text-center text-[12px] tracking-wide text-cream">
+        <div className="bg-ink text-center text-[12px] tracking-wide text-cream">
           {announcementHref ? (
             announcementHref.startsWith("/") ? (
-              <Link href={announcementHref} className="block px-4 py-2">
+              <Link href={announcementHref} className="block px-4 py-2.5 hover:underline">
                 {announcement}
               </Link>
             ) : (
-              <a href={announcementHref} className="block px-4 py-2">
+              <a href={announcementHref} className="block px-4 py-2.5 hover:underline">
                 {announcement}
               </a>
             )
           ) : (
-            <p className="px-4 py-2">{announcement}</p>
+            <p className="px-4 py-2.5">{announcement}</p>
           )}
         </div>
       )}
-      <div className="nav-bar">
-        {/* Three columns: the centre holds the name, and the side columns can never run into it. */}
-        <div className="relative mx-auto grid h-16 max-w-6xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-6 px-4 md:px-6">
+      <div className="nav-bar bg-white">
+        <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 md:h-[76px] md:gap-8 md:px-8">
           <div className="flex min-w-0 items-center">
-          <button
-            className="flex h-11 w-11 items-center justify-center md:hidden"
-            aria-label="Open menu"
-            onClick={() => setMenu(true)}
-          >
-            <span className="flex w-5 flex-col gap-1.5">
-              <span className="h-px bg-ink" />
-              <span className="h-px bg-ink" />
-              <span className="h-px bg-ink" />
-            </span>
-          </button>
-
-          <DesktopNav links={links} />
+            <button
+              className="flex h-11 w-11 items-center justify-center md:hidden"
+              aria-label="Open menu"
+              onClick={() => setMenu(true)}
+            >
+              <span className="flex w-5 flex-col gap-1.5">
+                <span className="h-px bg-ink" />
+                <span className="h-px bg-ink" />
+                <span className="h-px bg-ink" />
+              </span>
+            </button>
+            <Link href="/" className="serif text-[26px] leading-none tracking-tight md:text-[32px]">
+              Earthen
+            </Link>
           </div>
 
-          <Link href="/" className="text-[15px] tracking-[0.32em]">
-            EARTHEN
-          </Link>
+          <button
+            type="button"
+            onClick={() => setSearch(true)}
+            className="hidden h-11 min-w-0 flex-1 items-center gap-2 rounded-full border border-line bg-[#f5f5f5] px-4 text-left text-sm text-muted md:flex"
+          >
+            <Icon name="search" className="h-4 w-4 shrink-0" />
+            <span className="truncate">Search grills, machines, bakeware…</span>
+          </button>
 
-          <div className="flex items-center justify-end gap-4 text-sm">
-            <button className="hidden h-11 items-center gap-1.5 md:flex" onClick={() => setSearch(true)}>
-              <Icon name="search" className="h-4 w-4" />
-              Search
-            </button>
+          <div className="ml-auto flex items-center gap-1 text-sm md:gap-2">
             <button className="flex h-11 w-11 items-center justify-center md:hidden" onClick={() => setSearch(true)} aria-label="Search">
               <Icon name="search" />
             </button>
-            <Link href="/account" className="hidden h-11 items-center gap-1.5 md:flex">
+            <Link href="/account" className="hidden h-11 items-center gap-1.5 px-2 md:flex">
               <Icon name="user" className="h-4 w-4" />
               Account
             </Link>
-            <Link href="/cart" className="flex h-11 items-center gap-1.5" aria-label={`Bag, ${totals.count} items`}>
+            <Link href="/cart" className="flex h-11 items-center gap-1.5 px-2" aria-label={`Bag, ${totals.count} items`}>
               <Icon name="bag" className={`h-4 w-4 ${tick ? "bag-pop" : ""}`} />
               <span className="hidden sm:inline">Bag</span>
               <span>
@@ -126,12 +109,23 @@ export function Header() {
             </Link>
           </div>
         </div>
+        <nav aria-label="Shop" className="hidden border-t border-line md:block">
+          <ul className="mx-auto flex max-w-7xl items-center gap-x-8 gap-y-2 overflow-x-auto px-8 py-3 text-[13px]">
+            {links.map((link) => (
+              <li key={link.href} className="shrink-0">
+                <Link href={link.href} className="whitespace-nowrap hover:underline">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
 
       {menu && (
-        <div className="fixed inset-0 z-50 bg-cream md:hidden">
+        <div className="fixed inset-0 z-50 bg-white md:hidden">
           <div className="flex h-16 items-center justify-between border-b border-line px-4">
-            <span className="tracking-[0.32em]">EARTHEN</span>
+            <span className="serif text-2xl">Earthen</span>
             <button className="flex h-11 w-11 items-center justify-center" onClick={() => setMenu(false)} aria-label="Close menu">
               <Icon name="close" />
             </button>
@@ -190,7 +184,7 @@ function SearchOverlay({
   }
 
   return (
-    <div className="search-pop fixed inset-0 z-50 bg-cream">
+    <div className="search-pop fixed inset-0 z-50 bg-white">
       <form onSubmit={submit} className="mx-auto flex h-16 max-w-3xl items-center gap-3 border-b border-line px-4">
         <input
           autoFocus
@@ -244,107 +238,5 @@ function SearchOverlay({
         </div>
       </div>
     </div>
-  );
-}
-
-const NAV_GAP = 24; // gap-6
-
-/**
- * The category links in the desktop header. Shows as many as fit beside the name and moves the rest
- * under "More", so adding categories (or a narrower window) never pushes links into the name.
- */
-function DesktopNav({ links }: { links: { href: string; label: string }[] }) {
-  const pathname = usePathname();
-  const navRef = useRef<HTMLElement>(null);
-  const measureRef = useRef<HTMLDivElement>(null);
-  const moreRef = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(links.length);
-  const [open, setOpen] = useState(false);
-  const key = links.map((link) => link.href).join("|");
-
-  useEffect(() => {
-    const nav = navRef.current;
-    const measure = measureRef.current;
-    if (!nav || !measure) return;
-    const fit = () => {
-      const widths = [...measure.children].map((child) => (child as HTMLElement).offsetWidth);
-      const more = widths.pop() ?? 0;
-      const room = nav.clientWidth;
-      const total = (count: number) => widths.slice(0, count).reduce((sum, width) => sum + width, 0) + Math.max(0, count - 1) * NAV_GAP;
-      if (total(widths.length) <= room) {
-        setShown(widths.length);
-        return;
-      }
-      let count = widths.length;
-      while (count > 0 && total(count) + NAV_GAP + more > room) count -= 1;
-      setShown(count);
-    };
-    fit();
-    const observer = new ResizeObserver(fit);
-    observer.observe(nav);
-    void document.fonts?.ready.then(fit);
-    return () => observer.disconnect();
-  }, [key]);
-
-  useEffect(() => setOpen(false), [pathname]);
-
-  useEffect(() => {
-    if (!open) return;
-    const close = (event: MouseEvent | KeyboardEvent) => {
-      if (event instanceof KeyboardEvent ? event.key === "Escape" : !moreRef.current?.contains(event.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", close);
-    document.addEventListener("keydown", close);
-    return () => {
-      document.removeEventListener("mousedown", close);
-      document.removeEventListener("keydown", close);
-    };
-  }, [open]);
-
-  const visible = links.slice(0, shown);
-  const hidden = links.slice(shown);
-
-  return (
-    <nav ref={navRef} aria-label="Shop" className="relative hidden min-w-0 flex-1 items-center gap-6 text-sm md:flex">
-      {/* Clipped sideways so links can never paint over the name, even before the first measurement. */}
-      <div className="flex min-w-0 items-center gap-6 overflow-x-clip">
-        {visible.map((link) => (
-          <Link key={link.href} href={link.href} className="whitespace-nowrap hover:text-olive-deep">
-            {link.label}
-          </Link>
-        ))}
-      </div>
-      {hidden.length > 0 && (
-        <div ref={moreRef} className="relative">
-          <button
-            type="button"
-            aria-expanded={open}
-            aria-haspopup="true"
-            onClick={() => setOpen((value) => !value)}
-            className="flex items-center gap-1 whitespace-nowrap hover:text-olive-deep"
-          >
-            More <span aria-hidden="true" className="text-[10px]">▾</span>
-          </button>
-          {open && (
-            <div className="absolute left-0 top-full z-40 mt-3 min-w-44 border border-line bg-cream py-2 shadow-sm">
-              {hidden.map((link) => (
-                <Link key={link.href} href={link.href} className="block whitespace-nowrap px-4 py-2 hover:text-olive-deep">
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-      {/* Off-screen copy of every link plus "More", used only to measure how many fit. */}
-      <div ref={measureRef} aria-hidden="true" className="pointer-events-none invisible absolute left-0 top-0 flex gap-6 whitespace-nowrap">
-        {links.map((link) => (
-          <span key={link.href}>{link.label}</span>
-        ))}
-        <span className="flex items-center gap-1">
-          More <span className="text-[10px]">▾</span>
-        </span>
-      </div>
-    </nav>
   );
 }

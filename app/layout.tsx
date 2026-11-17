@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     default: "Earthen — Bakeware, knives, and grills",
     template: "%s — Earthen",
   },
-  description: "Cake moulds, knives, and charcoal grills, supplied from Bengaluru.",
+  description: "Cake moulds, knives, and charcoal grills, supplied from Visakhapatnam.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

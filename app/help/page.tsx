@@ -27,7 +27,7 @@ const faqs = [
   { q: "How do I return something?", a: "Open the order after it is delivered and choose return or exchange. You have 7 days. We arrange the pickup." },
   { q: "Will you text me?", a: "We'll WhatsApp the mobile on the order: confirmation, packing, shipping, delivery, and a cancel or return. If you're signed in and leave pieces in your bag or wishlist, we'll WhatsApp the mobile on your account after an hour. The receipt still goes to email." },
   { q: "How do the sizes work?", a: "Each piece lists the sizes from the catalog, such as 20 in, Small, or Lite. You choose one before it goes in the bag." },
-  { q: "Do prices include GST?", a: "Yes. The invoice splits CGST and SGST for Karnataka, and IGST for other states." },
+  { q: "Do prices include GST?", a: "Yes. The invoice splits CGST and SGST for Andhra Pradesh, and IGST for other states." },
 ];
 
 export default function HelpPage() {

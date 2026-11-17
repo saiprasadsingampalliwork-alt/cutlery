@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { brand } from "@/lib/brand";
 
 export default function NotFound() {
   return (
@@ -7,8 +8,8 @@ export default function NotFound() {
       <h1 className="serif mt-3 text-5xl">This page has wandered off.</h1>
       <p className="mt-3 text-sm leading-6 text-muted">The link may be old, or the piece may have sold through.</p>
       <p className="mt-2 text-sm text-muted">
-        <a href="tel:+918045672100" className="underline">
-          +91 80 4567 2100
+        <a href={brand.phoneHref} className="underline">
+          {brand.phone}
         </a>
       </p>
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">

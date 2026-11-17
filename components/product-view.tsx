@@ -283,7 +283,7 @@ function ProductDetail({ product: initial }: { product: Product }) {
             </Accordion>
             <Accordion title="Shipping and returns" open={open === "ship"} onToggle={() => setOpen(open === "ship" ? null : "ship")}>
               <p>
-                Free standard delivery on orders over ₹1,999, usually 3–5 days from Bengaluru. Express is ₹149 and arrives in 1–2 days. You have 7 days after delivery to return or exchange a piece. We arrange the pickup.{" "}
+                Free standard delivery on orders over ₹1,999, usually 3–5 days from Visakhapatnam. Express is ₹149 and arrives in 1–2 days. You have 7 days after delivery to return or exchange a piece. We arrange the pickup.{" "}
                 <Link href="/returns-policy" className="underline">
                   Read the return policy
                 </Link>

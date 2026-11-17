@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { api as request, customerToken, setCustomerToken, setStaffToken, staffToken } from "./api";
+import { brand } from "./brand";
 import { fabricList, forgetStyle, installStyles, orderCategories, orderStyles, rememberStyle, type Style, forgetAudience, forgetCategory, forgetFabric, installFabrics, rememberFabric, type Fabric, forgetProduct, getProduct, installAudiences, installCatalog, installCategories, rememberAudience, type Audience, liveProduct, rememberCategory, rememberProduct, toProduct, unitsAvailable, type ApiProduct, type Product, type ProductOverride, type ShopCategory, type Size } from "./catalog";
 import { defaultCoupons, evaluateCoupon, formatINR, shippingFee, type CouponRecord } from "./money";
 import { applyStoreSale } from "./sale";
@@ -222,10 +223,10 @@ const demoAddress: Address = {
   name: "Aisha Menon",
   phone: "9876543210",
   line1: "14, Coconut Avenue",
-  line2: "Indiranagar",
-  city: "Bengaluru",
-  state: "Karnataka",
-  pin: "560038",
+  line2: "Siripuram",
+  city: "Visakhapatnam",
+  state: "Andhra Pradesh",
+  pin: "530003",
   isDefault: true,
 };
 
@@ -406,7 +407,7 @@ const defaultSettings: StoreSettings = {
   refundMethod: "Original payment",
   exchanges: true,
   businessName: "Earthen",
-  gstin: "29AABCE1234F1Z5",
+  gstin: "37AABCE1234F1Z5",
   pricesIncludeGst: true,
   announcementEnabled: true,
   announcementText: "",
@@ -580,7 +581,8 @@ async function withGuestOrders(data: RemoteState): Promise<RemoteState> {
 }
 
 function withSitePictures(settings: StoreSettings): StoreSettings {
-  return { ...settings, content: siteContent(settings) };
+  const gstin = settings.gstin === "29AABCE1234F1Z5" ? brand.gstin : settings.gstin;
+  return { ...settings, gstin, content: siteContent({ ...settings, gstin }) };
 }
 
 function applyRemote(current: Persisted, data: RemoteState): Persisted {

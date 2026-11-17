@@ -10,7 +10,7 @@ import { useStore } from "@/lib/store";
 import { useHydrated } from "@/lib/use-hydrated";
 import { Reveal } from "@/components/reveal";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 40;
 
 const sorts = [
   { id: "newest", label: "Newest" },
@@ -102,7 +102,7 @@ export function ShopView({ path = "/shop" }: { path?: string }) {
   ];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
+    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
       <p className="text-sm text-muted">
         Home{audience && !isSearch && category !== "all" ? ` / ${audience}` : ""} / {title}
       </p>
@@ -204,7 +204,7 @@ export function ShopView({ path = "/shop" }: { path?: string }) {
 
       {browsing && (
       <div>
-        <Reveal key={`${category}-${query}-${sort}-${current}`} className="mt-8 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <Reveal key={`${category}-${query}-${sort}-${current}`} className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 xl:grid-cols-5">
           {visible.map((product) => (
             <ProductCard key={product.slug} product={originals.get(product.slug) ?? product} />
           ))}

@@ -176,14 +176,14 @@ const NEW_IN: ShopCategory = {
 export const PLACEHOLDER_IMAGE = "/photos/placeholder.svg";
 
 export const DEFAULT_CATEGORIES: ShopCategory[] = [
-  { slug: "bakeware", label: "Bakeware", blurb: "Cake moulds, trays, and stands", image: "/photos/category-bakeware.jpg", chart: "upper" },
-  { slug: "baking-tools", label: "Baking tools", blurb: "Pins, gloves, mats, and bags", image: "/photos/category-baking-tools.jpg", chart: "upper" },
-  { slug: "knives", label: "Knives", blurb: "Bread, shawarma, and pizza knives", image: "/photos/category-knives.jpg", chart: "upper" },
   { slug: "grills", label: "Grills", blurb: "Charcoal grills and kabab rods", image: "/photos/category-grills.jpg", chart: "upper" },
+  { slug: "machines", label: "Machines", blurb: "Atta makers, mixers, and fryers", image: "/photos/category-machines.jpg", chart: "upper" },
+  { slug: "baking-tools", label: "Baking tools", blurb: "Pins, gloves, mats, and bags", image: "/photos/category-baking-tools.jpg", chart: "upper" },
+  { slug: "bakeware", label: "Bakeware", blurb: "Cake moulds, trays, and stands", image: "/photos/category-bakeware.jpg", chart: "upper" },
+  { slug: "knives", label: "Knives", blurb: "Bread, shawarma, and pizza knives", image: "/photos/category-knives.jpg", chart: "upper" },
   { slug: "kitchen", label: "Kitchen", blurb: "Flasks, thermometers, and hammers", image: "/photos/category-kitchen.jpg", chart: "upper" },
   { slug: "bar", label: "Bar", blurb: "Shakers, pourers, and beer towers", image: "/photos/category-bar.jpg", chart: "upper" },
   { slug: "spares", label: "Spares", blurb: "Elements, switches, and mixer parts", image: "/photos/category-spares.jpg", chart: "upper" },
-  { slug: "machines", label: "Machines", blurb: "Atta makers, mixers, and fryers", image: "/photos/category-machines.jpg", chart: "upper" },
   { slug: "equipment", label: "Equipment", blurb: "Ranges, freezers, and work tables", image: "/photos/category-equipment.jpg", chart: "upper" },
 ];
 
@@ -289,7 +289,7 @@ export const products: Product[] = kitchenPieces.map((row) => ({
   fabric: row.fabric,
   fabricDetail: row.fabricDetail,
   styles: row.styles,
-  origin: "Supplied from Bengaluru",
+  origin: "Supplied from Visakhapatnam",
   fit: row.fit,
   model: { heightCm: 0, size: row.sizes[0] },
   description: row.description,
@@ -549,7 +549,7 @@ export function toProduct(row: ApiProduct): Product {
     fabric: row.fabric || known?.fabric || "Stainless steel",
     fabricDetail: row.fabric ? row.fabricDetail ?? "" : known?.fabricDetail,
     styles: Array.isArray(row.styles) ? row.styles.map(String) : known?.styles ?? [],
-    origin: row.origin || known?.origin || "Finished in Bengaluru",
+    origin: row.origin || known?.origin || "Finished in Visakhapatnam",
     fit: row.fit || known?.fit || "See the dimensions on this piece.",
     model: (row.model as Product["model"]) || known?.model || { heightCm: 0, size: "Standard" },
     description: row.description || known?.description || "",

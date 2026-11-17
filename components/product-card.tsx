@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "@/components/icons";
 import { ProductVisual } from "@/components/product-visual";
-import { audienceLabel, fabricText, liveProduct, PLACEHOLDER_IMAGE, productGender, unitsAvailable, type Product } from "@/lib/catalog";
+import { liveProduct, PLACEHOLDER_IMAGE, unitsAvailable, type Product } from "@/lib/catalog";
 import { formatINR } from "@/lib/money";
 import { withStoreSale } from "@/lib/sale";
 import type { Silhouette } from "@/lib/studio";
@@ -14,6 +14,7 @@ import { useHydrated } from "@/lib/use-hydrated";
 export function ProductCard({ product, transitionName }: { product: Product; transitionName?: string }) {
   const { addToCart, toggleWishlist, wished, usualSize, overrides, settings } = useStore();
   const hydrated = useHydrated();
+  const instance = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const listed = liveProduct(product, hydrated ? overrides[product.slug] : undefined);
   const live = hydrated ? withStoreSale(listed, settings) : listed;
   const swatch = live.colors[0] ?? { name: "Default", hex: "#E4D7C4" };
@@ -105,14 +106,22 @@ export function ProductCard({ product, transitionName }: { product: Product; tra
           colorName={swatch.name}
           silhouette={live.silhouette}
           photos={live.photos}
-          transitionName={transitionName}
+          transitionName={transitionName ?? `product-${live.slug}-${instance}`}
         />
-        <div className="mt-4">
-          <p className="text-[11px] uppercase tracking-[0.16em] text-muted">{audienceLabel(productGender(live))}</p>
-          <p className="mt-1 text-sm">{live.name}</p>
-          <p className="mt-1 text-sm text-muted">{fabricText(live)}</p>
-          <p className="mt-1 text-xs text-muted">{live.colors.map((entry) => entry.name).join(" · ")}</p>
-          <p className="mt-2 text-sm">
+        <div className="mt-3">
+          <p className="text-sm leading-5">{live.name}</p>
+          {live.reviewCount > 0 && (
+            <p className="mt-1 flex items-center gap-1.5 text-xs text-muted">
+              <span className="tracking-tight text-ink" aria-hidden="true">
+                {"★".repeat(Math.round(live.rating))}
+                {"☆".repeat(Math.max(0, 5 - Math.round(live.rating)))}
+              </span>
+              <span>
+                {live.rating.toFixed(1)} · {live.reviewCount}
+              </span>
+            </p>
+          )}
+          <p className="mt-1 text-sm">
             {formatINR(live.price)}
             {live.price < live.basePrice && <span className="ml-2 text-muted line-through">{formatINR(live.basePrice)}</span>}
           </p>
@@ -125,7 +134,7 @@ export function ProductCard({ product, transitionName }: { product: Product; tra
             onClick={quickHeart}
             aria-label={saved ? `Remove ${live.name} from wishlist` : `Save ${live.name} to wishlist`}
             aria-pressed={saved}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-cream/95 text-ink"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white/95 text-ink"
           >
             <Heart filled={saved} pop={pop} onDone={() => setPop(false)} />
           </button>
@@ -133,7 +142,7 @@ export function ProductCard({ product, transitionName }: { product: Product; tra
             type="button"
             onClick={quickBag}
             aria-label={`Add ${live.name} to bag`}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-cream/95 text-ink"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white/95 text-ink"
           >
             <Icon name="bag" className={`h-4 w-4 ${added ? "bag-pop" : ""}`} />
           </button>

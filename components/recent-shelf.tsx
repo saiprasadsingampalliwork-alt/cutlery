@@ -4,9 +4,13 @@ import { ProductCard } from "@/components/product-card";
 import { getProduct, onSale } from "@/lib/catalog";
 import { useStore } from "@/lib/store";
 
-export function RecentShelf({ plain = false }: { plain?: boolean }) {
+export function RecentShelf({ plain = false, hideCategories = [] }: { plain?: boolean; hideCategories?: string[] }) {
   const { recent, overrides } = useStore();
-  const items = recent.map((slug) => getProduct(slug)).filter((product): product is NonNullable<typeof product> => product != null && onSale(product.slug, overrides)).slice(0, 4);
+  const hidden = new Set(hideCategories);
+  const items = recent
+    .map((slug) => getProduct(slug))
+    .filter((product): product is NonNullable<typeof product> => product != null && onSale(product.slug, overrides) && !hidden.has(product.category))
+    .slice(0, 4);
   if (items.length === 0) return null;
 
   const grid = (

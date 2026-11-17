@@ -169,7 +169,7 @@ export function Invoice({ order }: { order: Order }) {
     const gst = includedGst(item.price);
     return { ...item, ...gst, lineTax: gst.tax * item.quantity, lineTaxable: gst.taxable * item.quantity };
   });
-  const sameState = order.address.state === "Karnataka";
+  const sameState = order.address.state === brand.state;
   const tax = lines.reduce((sum, line) => sum + line.lineTax, 0);
 
   return (

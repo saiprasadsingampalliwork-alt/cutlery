@@ -1,5 +1,6 @@
 import type { Order, StaffRole } from "@/lib/store";
 import { includedGst } from "@/lib/money";
+import { brand } from "@/lib/brand";
 
 export function canAccess(role: StaffRole, path: string) {
   if (path === "/admin/login" || path === "/admin") return true;
@@ -32,7 +33,7 @@ export function gstSplit(order: Order) {
   let sgst = 0;
   let igst = 0;
   let taxable = 0;
-  const same = order.address.state === "Karnataka";
+  const same = order.address.state === brand.state;
   for (const item of order.items) {
     const gst = includedGst(item.price);
     const tax = gst.tax * item.quantity;

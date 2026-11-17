@@ -169,6 +169,8 @@ const retiredCopy = new Set([
   "The table, 2026",
   "For the table you already have.",
   "For the table\nyou already have.",
+  "14, Coconut Avenue, Indiranagar, Bengaluru 560038",
+  "+91 80 4567 2100",
   "Plates, bowls, and cutlery in stoneware and steel, finished in small runs in Bengaluru.",
   "Cake moulds, knives, and charcoal grills, in the sizes a home kitchen or a bakery counter asks for.",
   "Teflon moulds, stainless steel, and charcoal grills for everyday baking and a weekend party.",
@@ -178,16 +180,20 @@ const retiredCopy = new Set([
   "Pieces you can add one at a time.",
 ]);
 
+function retired(value: string) {
+  return retiredCopy.has(value) || /Bengaluru|Bangalore/.test(value);
+}
+
 function text(value: unknown, fallback: string, max: number) {
   const next = typeof value === "string" ? value.trim().replace(/\s+/g, " ") : "";
-  if (!next || retiredCopy.has(next)) return fallback.slice(0, max);
+  if (!next || retired(next)) return fallback.slice(0, max);
   return next.slice(0, max);
 }
 
 function paragraph(value: unknown, fallback: string, max: number) {
   const next = typeof value === "string" ? value.trim() : "";
   const flat = next.replace(/\s+/g, " ");
-  if (!next || retiredCopy.has(next) || retiredCopy.has(flat)) return fallback.slice(0, max);
+  if (!next || retired(next) || retired(flat)) return fallback.slice(0, max);
   return next.slice(0, max);
 }
 
