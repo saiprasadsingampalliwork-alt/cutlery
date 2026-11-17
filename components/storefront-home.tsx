@@ -48,7 +48,7 @@ export function StorefrontHome() {
         <h2 id="shop-by-category" className="serif text-center text-3xl md:text-4xl">
           Shop by category
         </h2>
-        <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-6 grid grid-cols-3 gap-x-2 gap-y-5 md:mt-8 md:gap-x-4 md:gap-y-8 lg:grid-cols-5">
           {categories.map((category, index) => (
             <CategoryStage
               key={category.slug}
@@ -242,7 +242,7 @@ function CategoryStage({ label, href, frames, offset }: { label: string; href: s
           />
         ))}
       </span>
-      <p className="mt-3 text-center text-sm">{label}</p>
+      <p className="mt-2 text-center text-[11px] leading-4 md:mt-3 md:text-sm">{label}</p>
     </Link>
   );
 }
@@ -254,7 +254,16 @@ function RetailHero() {
 
   return (
     <section className="relative bg-ink text-white" aria-label="Featured">
-      <div className="grid grid-cols-3">
+      {frames[0] && (
+        <img
+          src={frames[0].src}
+          alt={frames[0].alt}
+          width={864}
+          height={1152}
+          className="h-[calc(100dvh-6.5rem)] w-full object-cover object-center lg:hidden"
+        />
+      )}
+      <div className="hidden lg:grid lg:grid-cols-3">
         {frames.map((frame, frameIndex) => (
           <img
             key={`${frame.src}-${frameIndex}`}
