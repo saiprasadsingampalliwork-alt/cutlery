@@ -582,7 +582,7 @@ async function withGuestOrders(data: RemoteState): Promise<RemoteState> {
 
 function withSitePictures(settings: StoreSettings): StoreSettings {
   const gstin = settings.gstin === "29AABCE1234F1Z5" ? brand.gstin : settings.gstin;
-  return { ...settings, gstin, content: siteContent({ ...settings, gstin }) };
+  return { ...settings, gstin, content: siteContent(settings) };
 }
 
 function applyRemote(current: Persisted, data: RemoteState): Persisted {
