@@ -26,7 +26,7 @@ const links = [
 export function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { staff, ready, staffSignOut } = useStore();
+  const { staff, ready } = useStore();
   const [menu, setMenu] = useState(false);
 
   useEffect(() => {
@@ -90,14 +90,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             </span>
           </button>
           <p className="absolute left-1/2 -translate-x-1/2 text-[15px] tracking-[0.32em] text-[#2a2925]">RATHODGROUP</p>
-          <button
-            type="button"
-            onClick={staffSignOut}
-            title="Sign out"
-            className="ml-auto grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#5b6043] text-sm text-[#fbf8f4]"
-          >
-            {staff.name.slice(0, 1)}
-          </button>
+          <SignOutButton className="ml-auto grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#5b6043] text-sm text-[#fbf8f4]" />
         </div>
         {menu && (
           <div className="fixed inset-0 z-50 overflow-y-auto bg-[#f7f4ee]">
@@ -134,23 +127,74 @@ export function AdminShell({ children }: { children: ReactNode }) {
   );
 }
 
-export function AdminHeader({ title, actions }: { title: string; actions?: ReactNode }) {
+function SignOutButton({ className }: { className: string }) {
   const { staff, staffSignOut } = useStore();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  if (!staff) return null;
+
+  function close() {
+    setOpen(false);
+  }
+
+  function signOut() {
+    setOpen(false);
+    staffSignOut();
+  }
+
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)} aria-label={`${staff.name}, account`} className={className}>
+        {staff.name.slice(0, 1)}
+      </button>
+      {open && (
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 px-4"
+          role="presentation"
+          onClick={close}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="sign-out-title"
+            className="w-full max-w-sm bg-[#fbf8f4] p-6 text-[#2a2925] shadow-lg"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <h2 id="sign-out-title" className="serif text-2xl">Sign out?</h2>
+            <p className="mt-2 text-sm leading-6 text-[#6d6960]">
+              You are signed in as {staff.name}. This leaves the admin until you sign in again.
+            </p>
+            <div className="mt-6 flex justify-end gap-3">
+              <button type="button" onClick={close} className="h-9 border border-[#2a2925] bg-white px-3 text-[11px] tracking-[0.14em]">
+                STAY
+              </button>
+              <button type="button" onClick={signOut} className="h-9 bg-[#2a2925] px-3 text-[11px] tracking-[0.14em] text-[#fbf8f4]">
+                SIGN OUT
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+export function AdminHeader({ title, actions }: { title: string; actions?: ReactNode }) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <h1 className="serif text-[28px] leading-none text-[#2a2925] sm:text-[32px]">{title}</h1>
       <div className="flex flex-wrap items-center gap-3">
         {actions}
-        {staff && (
-          <button
-            type="button"
-            onClick={staffSignOut}
-            title="Sign out"
-            className="hidden h-9 w-9 shrink-0 place-items-center rounded-full bg-[#5b6043] text-sm text-[#fbf8f4] md:grid"
-          >
-            {staff.name.slice(0, 1)}
-          </button>
-        )}
+        <SignOutButton className="hidden h-9 w-9 shrink-0 place-items-center rounded-full bg-[#5b6043] text-sm text-[#fbf8f4] md:grid" />
       </div>
     </div>
   );
